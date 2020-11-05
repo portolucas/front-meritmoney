@@ -4,6 +4,9 @@ import Login from "./Login";
 import Sign from "./Signup";
 import "../../App.css";
 
+import { getCurrentUser } from "../../services/auth/currentUser";
+import { getToken } from "../../services/auth/getToken";
+
 const Auth = () => {
   const [displayed_form, setDisplayed_form] = useState("");
   const [logged_in, setLogged_in] = useState(
@@ -11,42 +14,38 @@ const Auth = () => {
   );
   const [username, setUsername] = useState("");
 
+  async function fetchCurrentUser() {
+    const { data } = await getCurrentUser();
+    if (data.colaborador) {
+      setUsername(data.colaborador[0].nome);
+    }
+  }
+
   useEffect(() => {
     if (logged_in) {
       try {
-        fetch("http://localhost:8000/webapi/current_user/", {
-          headers: {
-            Authorization: `JWT ${localStorage.getItem("token")}`,
-          },
-        })
-          .then((res) => res.json())
-          .then((json) => {
-            if (json.colaborador) {
-              setUsername(json.colaborador[0].nome);
-            }
-          });
+        fetchCurrentUser();
       } catch (e) {
         console.log(`error in current user`, e);
       }
     }
   }, []);
 
+  async function fetchToken(body) {
+    const { data } = await getToken(body);
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
+    if (data.user) {
+      setUsername(data.user.username);
+    }
+    setLogged_in(true);
+    setDisplayed_form("");
+  }
+
   function handle_login(e, data) {
     e.preventDefault();
-    fetch("http://localhost:8000/token-auth/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        localStorage.setItem("token", json.token);
-        setLogged_in(true);
-        setDisplayed_form("");
-        setUsername(json.colaborador.nome);
-      });
+    fetchToken(JSON.stringify(data));
   }
 
   function handle_logout() {
