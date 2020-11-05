@@ -1,6 +1,6 @@
 import React from "react";
 
-const Nav = ({ display_form, handle_logout, logged_in }) => {
+const Nav = ({ display_form, handle_logout, logged }) => {
   const logged_out_nav = (
     <ul>
       <li onClick={() => display_form("login")}>login</li>
@@ -8,12 +8,12 @@ const Nav = ({ display_form, handle_logout, logged_in }) => {
     </ul>
   );
 
-  const logged_in_nav = (
+  const logged_nav = (
     <ul>
       <li onClick={handle_logout}>logout</li>
     </ul>
   );
-  return <div>{logged_in ? logged_in_nav : logged_out_nav}</div>;
+  return <div>{logged ? logged_nav : logged_out_nav}</div>;
 };
 
 export default Nav;
