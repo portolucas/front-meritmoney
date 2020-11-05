@@ -6,6 +6,7 @@ import "../../App.css";
 
 import { getCurrentUser } from "../../services/auth/currentUser";
 import { getToken } from "../../services/auth/getToken";
+import { signup } from "../../services/auth/signup";
 
 const Auth = () => {
   const [displayed_form, setDisplayed_form] = useState("");
@@ -54,23 +55,13 @@ const Auth = () => {
     setUsername("");
   }
 
-  function handle_signup(e, data) {
+  async function handle_signup(e, body) {
     e.preventDefault();
-    fetch("http://localhost:8000/webapi/users/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(json);
-        localStorage.setItem("token", json.user.token);
-        setLogged_in(true);
-        setDisplayed_form("");
-        setUsername(json.colaborador.nome);
-      });
+    const { data } = await signup(JSON.stringify(body));
+    localStorage.setItem("token", data.user.token);
+    setLogged_in(true);
+    setDisplayed_form("");
+    setUsername(data.colaborador.nome);
   }
 
   function form() {
