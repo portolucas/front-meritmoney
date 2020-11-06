@@ -1,13 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  Children,
-} from "react";
-import Nav from "./Nav";
-import Login from "./Login";
-import Sign from "./Signup";
+import React, { useState, useEffect, createContext } from "react";
 import "../../App.css";
 
 import { getCurrentUser } from "../../services/auth/currentUser";
@@ -16,16 +7,23 @@ import { signup } from "../../services/auth/signup";
 
 export const AuthContext = createContext();
 const Auth = ({ children }) => {
-  const [loginStatus, setloginStatus] = useState("");
   const [logged, setLogged] = useState(
     localStorage.getItem("token") ? true : false
   );
   const [username, setUsername] = useState("");
+  const [userData, setUserdata] = useState("");
 
   async function fetchCurrentUser() {
-    const { data } = await getCurrentUser();
-    if (data.colaborador) {
-      setUsername(data.colaborador[0].nome);
+    try {
+      if (logged) {
+        const { data } = await getCurrentUser();
+        if (data.colaborador) {
+          setUsername(data.colaborador.nome);
+          setUserdata(data.colaborador);
+        }
+      }
+    } catch (e) {
+      console.log("error during fetch current user", e);
     }
   }
 
@@ -37,60 +35,64 @@ const Auth = ({ children }) => {
         console.log(`error in current user`, e);
       }
     }
-  }, []);
+  }, [logged]);
 
-  async function fetchToken(body) {
-    const { data } = await getToken(body);
-    if (data.token) {
-      localStorage.setItem("token", data.token);
+  async function fetchToken(e, body) {
+    e.preventDefault();
+    try {
+      await getToken(body).then((res) =>
+        localStorage.setItem("token", res.data.token)
+      );
+      setLogged(true);
+      window.location.reload();
+      window.location.pathname = "/home";
+    } catch (e) {
+      console.log("error during fetch token", e);
     }
-    if (data.user) {
-      setUsername(data.user.username);
-    }
-    setLogged(true);
-    setloginStatus("");
   }
 
-  function handle_login(e, data) {
+  async function handle_login(e, data) {
     e.preventDefault();
-    fetchToken(JSON.stringify(data));
+    try {
+      fetchToken(e, JSON.stringify(data));
+    } catch (e) {
+      console.log("error during login", e);
+    }
   }
 
   function handle_logout() {
-    localStorage.removeItem("token");
-    setLogged(false);
-    setUsername("");
+    try {
+      localStorage.removeItem("token");
+      setLogged(false);
+      setUsername("");
+    } catch (e) {
+      console.log("error during logout", e);
+    }
   }
 
   async function handle_signup(e, body) {
     e.preventDefault();
-    const { data } = await signup(JSON.stringify(body));
-    localStorage.setItem("token", data.user.token);
-    setLogged(true);
-    setloginStatus("");
-    setUsername(data.colaborador.nome);
-  }
-
-  function form() {
-    switch (loginStatus) {
-      case "login":
-        return <Login handle_login={handle_login} />;
-      case "signup":
-        return <Sign handle_signup={handle_signup} />;
-      default:
-        return null;
+    try {
+      const { data } = await signup(JSON.stringify(body));
+      localStorage.setItem("token", data.user.token);
+      setLogged(true);
+      setUsername(data.colaborador.nome);
+    } catch (e) {
+      console.log("error during signup", e);
     }
   }
 
   return (
     <AuthContext.Provider
       value={{
-        loginStatus,
-        setloginStatus,
         logged,
         setLogged,
         username,
         setUsername,
+        handle_login,
+        userData,
+        handle_logout,
+        handle_signup,
       }}
     >
       {children}

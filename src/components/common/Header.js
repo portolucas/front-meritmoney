@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import { Link } from "react-router-dom";
 
 import { AuthContext } from "../auth/Auth";
 
@@ -19,18 +20,15 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  link: {
+    color: "white!important",
+    textDecoration: "none!important",
+  },
 }));
 
 const Header = () => {
   const classes = useStyles();
-  const {
-    loginStatus,
-    setloginStatus,
-    logged,
-    setLogged,
-    username,
-    setUsername,
-  } = useContext(AuthContext);
+  const { logged, username, handle_logout } = useContext(AuthContext);
 
   return (
     <div className={classes.root}>
@@ -45,9 +43,35 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Home
+            <Link className={classes.link} to="/">
+              Home
+            </Link>
           </Typography>
-          <Button color="inherit">{logged ? username : "Login"} </Button>
+          <Button color="inherit">
+            {logged ? (
+              username
+            ) : (
+              <Link className={classes.link} to="/login">
+                Login
+              </Link>
+            )}
+          </Button>
+          {logged && (
+            <Button
+              color="inherit"
+              className={classes.link}
+              onClick={handle_logout}
+            >
+              <Link className={classes.link} to="/">Logout</Link>
+            </Button>
+          )}
+          {!logged && (
+            <Button color="inherit">
+              <Link className={classes.link} to="/signup">
+                Signup
+              </Link>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>

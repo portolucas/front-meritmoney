@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.baseURL = process.env.API_URL || "http://localhost:8000";
 axios.defaults.headers = {
-  Authorization: localStorage.getItem('token') ? `JWT ${localStorage.getItem('token')}` : false,
+  Authorization: `JWT ${localStorage.getItem('token')}`
 };
 export default {
   get: axios.get,
