@@ -77,6 +77,8 @@ const Auth = ({ children }) => {
       localStorage.setItem("token", data.user.token);
       setLogged(true);
       setUsername(data.colaborador.nome);
+      window.location.reload();
+      window.location.pathname = "/home";
     } catch (e) {
       console.log("error during signup", e);
     }

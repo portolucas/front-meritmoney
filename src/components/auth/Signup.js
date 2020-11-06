@@ -1,8 +1,71 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../auth/Auth";
+
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+
+import { Link } from "react-router-dom";
+
 import { getAllCharges } from "../../services/charge";
 import { getAllSectors } from "../../services/sector";
 
-const Signup = ({ handle_signup }) => {
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  formControl: {
+    margin: "15px 0px 2px 0px",
+    minWidth: "100%",
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+const Signup = () => {
+  const classes = useStyles();
+  const { handle_signup } = useContext(AuthContext);
+
   const [signData, setSignData] = useState({
     username: "",
     password: "",
@@ -64,57 +127,140 @@ const Signup = ({ handle_signup }) => {
   }, []);
 
   return (
-    <form onSubmit={(e) => handle_signup(e, signData)}>
-      <h4>Sign Up</h4>
-      <label htmlFor="username">Username</label>
-      <input
-        type="text"
-        name="username"
-        value={signData.username}
-        onChange={handle_change}
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        value={signData.password}
-        onChange={handle_change}
-      />
-      <label htmlFor="nome">Nome</label>
-      <input
-        type="text"
-        name="nome"
-        value={signData.nome}
-        onChange={handle_change}
-      />
-      <label htmlFor="sobrenome">Sobrenome</label>
-      <input
-        type="text"
-        name="sobrenome"
-        value={signData.sobrenome}
-        onChange={handle_change}
-      />
-      <label htmlFor="cargos">Cargos</label>
-      <select
-        name="cargo"
-        value={signData.cargos && signData.cargos[0]}
-        onChange={handle_change}
-      >
-        {signData.cargos &&
-          signData.cargos.map((c) => {
-            return <option value={c.id}>{c.descricao}</option>;
-          })}
-      </select>
-      <label htmlFor="cargos">Setores</label>
-      <select name="setor" onChange={handle_change}>
-        {signData.setores &&
-          signData.setores.map((s) => {
-            return <option value={s.id}>{s.descricao}</option>;
-          })}
-      </select>
-
-      <input type="submit" onClick={setDefaultValues} />
-    </form>
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form
+            className={classes.form}
+            onSubmit={(e) => handle_signup(e, signData)}
+            noValidate
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name="username"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  label="username"
+                  autoFocus
+                  value={signData.username}
+                  onChange={handle_change}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  autoComplete="current-password"
+                  value={signData.password}
+                  onChange={handle_change}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  label="Nome"
+                  name="nome"
+                  value={signData.nome}
+                  onChange={handle_change}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  label="Sobrenome"
+                  name="sobrenome"
+                  value={signData.sobrenome}
+                  onChange={handle_change}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-outlined-label">
+                    Cargos
+                  </InputLabel>
+                  <Select
+                    value={signData.cargo}
+                    onChange={handle_change}
+                    label="Cargos"
+                    name="cargo"
+                  >
+                    {signData.cargos &&
+                      signData.cargos.map((cargo) => {
+                        return (
+                          <MenuItem value={cargo.id}>
+                            {cargo.descricao}
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-outlined-label">
+                    Setores
+                  </InputLabel>
+                  <Select
+                    name="setor"
+                    value={signData.setor}
+                    onChange={handle_change}
+                    label="Setores"
+                  >
+                    {signData.setores &&
+                      signData.setores.map((setor) => {
+                        return (
+                          <MenuItem value={setor.id}>
+                            {setor.descricao}
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={setDefaultValues}
+            >
+              Sign Up
+            </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link to="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </Container>
+    </>
   );
 };
 

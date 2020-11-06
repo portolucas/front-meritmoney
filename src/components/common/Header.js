@@ -44,7 +44,7 @@ const Header = () => {
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Link className={classes.link} to="/">
-              Home
+              Merit Money
             </Link>
           </Typography>
           <Button color="inherit">
