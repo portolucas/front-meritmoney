@@ -4,6 +4,10 @@ export function getAllPrizes() {
   return http.get(`/webapi/premios/`);
 }
 
+export function getPrizeById(id) {
+  return http.get(`/webapi/premios/${id}`);
+}
+
 export function getAllPrizesTransactions() {
   return http.get(`/webapi/transacao-premios/`);
 }

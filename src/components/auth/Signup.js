@@ -13,7 +13,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
@@ -106,7 +105,6 @@ const Signup = () => {
 
   async function setDefaultValues() {
     if (!signData.cargo && signData.cargos) {
-      console.log("entrou");
       setSignData((prevState) => ({
         ...prevState,
         cargo: signData.cargos[0].id,
