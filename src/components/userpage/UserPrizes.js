@@ -1,35 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import prizeCardCover from "../../static/images/prize-card-cover.svg";
 
 import { getPrizeById } from "../../services/prizes";
 import { AuthContext } from "../auth/Auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    padding: 20,
+    display: 'flex',
+    maxWidth: '100%'
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "left",
-    color: theme.palette.text.secondary,
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
   },
-  cardRoot: {
-    minWidth: 275,
-    padding: 20,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
+  content: {
+    flex: '1 0 auto',
   },
   pos: {
     marginBottom: 12,
@@ -77,28 +67,36 @@ const UserPrizes = () => {
   }, [userData]);
 
   return (
-    <Grid item xs={6}>
-      <h1>Meus prêmios</h1>
-      <Paper className={classes.paper}>
-        <Card className={classes.cardRoot}>
-          <CardContent>
+    <>
+      <Card className={classes.root}>
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography className={classes.pos} variant={"h3"}>
+              Prêmios resgatados
+            </Typography>
             {prizes &&
               prizes.map((prize) => {
                 return (
                   <>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="body1" component="h2">
                       {prize.descricao}
                     </Typography>
                     <Typography className={classes.pos} color="textSecondary">
-                      preço: {prize.valor}
+                      por mc$ {prize.valor}
                     </Typography>
                   </>
                 );
               })}
           </CardContent>
-        </Card>
-      </Paper>
-    </Grid>
+        </div>
+        <CardMedia
+          component="img"
+          alt="Prêmios resgatados"
+          className={classes.cover}
+          image={prizeCardCover}
+        />
+      </Card>
+    </>
   );
 };
 

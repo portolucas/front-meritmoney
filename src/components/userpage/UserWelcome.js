@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 import { getPrizeById } from "../../services/prizes";
 import { listHurtsByColaborator } from "../../services/hurts";
@@ -10,6 +11,7 @@ import SimpleAccordion from "../common/Accordion";
 
 import UserPrizes from "./UserPrizes";
 import UserHurts from "./UserHurts";
+import UserRescue from "./UserRescue";
 
 import { AuthContext } from "../auth/Auth";
 import UserDonate from "./UserDonate";
@@ -18,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     padding: 20,
-    width: "100%",
   },
   paper: {
     padding: theme.spacing(2),
@@ -55,20 +56,31 @@ const UserWelcome = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <h3>Bem-vindo, {userData.nome}</h3> <br /> O seu saldo para resgatar
-            prêmios é {userData.saldo_recebido} <br /> O seu saldo para
-            presentear os seus amigos é {userData.saldo_acumulado}
+            <Typography variant={"h1"}>Bem-vindo, {userData.nome}</Typography>{" "}
+            <Typography variant={"subtitle1"}>
+              O seu saldo para resgatar prêmios é mc${userData.saldo_recebido}
+            </Typography>
+            <Typography variant={"subtitle1"}>
+              O seu saldo para presentear os seus amigos é mc$
+              {userData.saldo_acumulado}{" "}
+            </Typography>
           </Paper>
         </Grid>
-        <UserPrizes />
-        <UserHurts />
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
+          <UserPrizes />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <UserHurts />
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <SimpleAccordion title={"Doar"}>
             <UserDonate />
           </SimpleAccordion>
         </Grid>
-        <Grid item xs={6}>
-          <SimpleAccordion></SimpleAccordion>
+        <Grid item xs={12} sm={6}>
+          <SimpleAccordion title={"Resgatar"}>
+            <UserRescue />
+          </SimpleAccordion>
         </Grid>
       </Grid>
     </div>

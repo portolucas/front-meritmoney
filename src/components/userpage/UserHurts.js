@@ -5,33 +5,25 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 
 import { listHurtsByColaborator } from "../../services/hurts";
 import { AuthContext } from "../auth/Auth";
 
+import hurtsCardCover from "../../static/images/hurts-card-cover.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    padding: 20,
+    display: "flex",
+    maxWidth: "100%",
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "left",
-    color: theme.palette.text.secondary,
+  details: {
+    display: "flex",
+    flexDirection: "column",
   },
-  cardRoot: {
-    minWidth: 275,
-    padding: 20,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
+  content: {
+    flex: "1 0 auto",
   },
   pos: {
     marginBottom: 12,
@@ -41,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const UserHurts = () => {
   const classes = useStyles();
   const { userData, logged } = useContext(AuthContext);
-  const [realizedHurts, setRealizedHurts] = useState([])
+  const [realizedHurts, setRealizedHurts] = useState([]);
   const [rogerHurts, setRogerHurts] = useState([]);
 
   const fetchColaboratorHurts = async () => {
@@ -63,57 +55,61 @@ const UserHurts = () => {
   }, [userData]);
 
   return (
-    <Grid item xs={6}>
-      <h1>Minhas doações</h1>
-      <Paper className={classes.paper}>
-        <Card className={classes.cardRoot}>
-          <CardContent>
+    <>
+      <Card className={classes.root}>
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography className={classes.pos} variant={"h3"}>
+              Minhas doações
+            </Typography>
             {realizedHurts &&
               realizedHurts.map((hurts) => {
                 return (
-                  <>
-                    <Typography lassName={classes.pos} color="textSecondary">
-                      Realizada
+                  <div className={classes.pos}>
+                    <Typography color="textSecondary">
+                      mc$ {hurts.valor} enviada para
+                      <Typography color="textSecondary">
+                        {hurts.nome_destinatario}
+                      </Typography>
                     </Typography>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="body1">
+                      dia{" "}
                       {moment(hurts.data_transacao)
                         .local()
                         .format("DD/MM/YYYY")}
                     </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                      preço: {hurts.valor}
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                      Destinatário: {hurts.nome_destinatario}
-                    </Typography>
-                  </>
+                  </div>
                 );
               })}
             {rogerHurts &&
               rogerHurts.map((hurts) => {
                 return (
-                  <>
-                    <Typography lassName={classes.pos} color="textSecondary">
-                      Recebida
+                  <div className={classes.pos}>
+                    <Typography color="textSecondary">
+                      mc$ {hurts.valor} recebida de
                     </Typography>
-                    <Typography variant="h5" component="h2">
+                    <Typography color="textSecondary">
+                      {hurts.nome_remetente}
+                    </Typography>
+                    <Typography variant="body1">
+                      dia{" "}
                       {moment(hurts.data_transacao)
                         .local()
                         .format("DD/MM/YYYY")}
                     </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                      preço: {hurts.valor}
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                      Remetente: {hurts.nome_remetente}
-                    </Typography>
-                  </>
+                  </div>
                 );
               })}
           </CardContent>
-        </Card>
-      </Paper>
-    </Grid>
+        </div>
+        <CardMedia
+          component="img"
+          alt="Prêmios resgatados"
+          className={classes.cover}
+          image={hurtsCardCover}
+        />
+      </Card>
+    </>
   );
 };
 
