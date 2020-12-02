@@ -1,4 +1,4 @@
-# Django & React: JWT Authentication
+# Django & React
 
 ## React Frontend
 
