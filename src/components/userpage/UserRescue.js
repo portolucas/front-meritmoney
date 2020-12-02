@@ -1,19 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
-
+import IconButton from "@material-ui/core/IconButton";
+import GetAppOutlinedIcon from "@material-ui/icons/GetAppOutlined";
 import { SelectInput, InputCurrency, InputMultiline } from "../common/Inputs";
 import { getAllPrizes } from "../../services/prizes";
 import { rescuePrize } from "../../services/prizes";
+
+import { useSnackBar } from "../common/Snackbar";
 
 import { AuthContext } from "../auth/Auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    maxWidth: "100%",
     "& > *": {
       margin: theme.spacing(1),
       width: "25ch",
+    },
+  },
+  rootIcon: {
+    "& > *": {
+      margin: theme.spacing(1),
     },
   },
 }));
@@ -22,8 +30,8 @@ const UserRescue = () => {
   const classes = useStyles();
   const { userData } = useContext(AuthContext);
   const [prizeOptions, setPrizeOptions] = useState([]);
-  //const [error, setError] = useState("");
-  //const [helperText, setHelperText] = useState("");
+  const { setSnackBarHttpSuccess } = useSnackBar();
+  const { setSnackbarHttpError, setSnackBarHttpWarning } = useSnackBar();
 
   const [rescue, setRescue] = useState({
     id_colaborador: null,
@@ -32,7 +40,6 @@ const UserRescue = () => {
 
   const handleChange = (event) => {
     event.persist();
-    console.log(event);
     setRescue((oldValues) => ({
       ...oldValues,
       [event.target.name]: event.target.value,
@@ -60,39 +67,26 @@ const UserRescue = () => {
     fetchPrizes();
   }, [userData]);
 
-{/*  const validateCurrency = async () => {
-    if (rescue.valor_premio > userData.saldo_acumulado) {
-      setError(true);
-      setHelperText("Saldo insuficiente");
-    } else {
-      setError(false);
-      setHelperText("Digite um valor inteiro");
-    }
-  }; 
-
-  useEffect(() => {
-    validateCurrency();
-  }, [rescue.valor_premio]);
-*/}
-
   const handleSubmit = async () => {
     let body = { ...rescue };
     body.id_colaborador = userData.id;
     if (body.id_colaborador && body.id_premio) {
       try {
         let { status } = await rescuePrize(body);
-        if (status === 200) {
+        if (status === 204) {
           setRescue((oldValues) => ({
             ...oldValues,
             id_colaborador: null,
             id_premio: null,
           }));
+          setSnackBarHttpSuccess("Resgatado com sucesso!");
         }
       } catch (e) {
+        setSnackbarHttpError(e, { "Ocoreu um erro": e.response.data.message });
         console.log(`error during fetch rescue prize api ${e}`);
       }
     } else {
-      console.log(body);
+      setSnackBarHttpWarning("Preencha todos os campos");
     }
   };
 
@@ -105,17 +99,12 @@ const UserRescue = () => {
         label={"Prêmios"}
         value={rescue.id_premio}
         onChange={handleChange}
-        //error={error}
-        // helperText={helperText}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        onClick={handleSubmit}
-      >
-        Enviar
-      </Button>
+      <div className={classes.rootIcon}>
+        <IconButton color="primary" aria-label="add to shopping cart">
+          <GetAppOutlinedIcon size="large" onClick={handleSubmit} />
+        </IconButton>
+      </div>
     </form>
   );
 };

@@ -1,19 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
-
+import IconButton from "@material-ui/core/IconButton";
+import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
 import { SelectInput, InputCurrency, InputMultiline } from "../common/Inputs";
 import { getAllColaborators } from "../../services/colaborator";
 import { sendCoins } from "../../services/sendCoins";
+
+import { useSnackBar } from "../common/Snackbar";
 
 import { AuthContext } from "../auth/Auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    maxWidth: "100%",
     "& > *": {
       margin: theme.spacing(1),
       width: "25ch",
+    },
+  },
+  rootIcon: {
+    "& > *": {
+      margin: theme.spacing(1),
     },
   },
 }));
@@ -24,6 +32,8 @@ const UserDonate = () => {
   const [colaboratorsOptions, setColaboratorOptions] = useState([]);
   const [error, setError] = useState("");
   const [helperText, setHelperText] = useState("");
+  const { setSnackBarHttpSuccess } = useSnackBar();
+  const { setSnackbarHttpError, setSnackBarHttpWarning } = useSnackBar();
 
   const [donate, setDonate] = useState({
     id_remetente: null,
@@ -95,12 +105,14 @@ const UserDonate = () => {
             valor: null,
             justificativa: null,
           }));
+          setSnackBarHttpSuccess("Enviado com sucesso!");
         }
       } catch (e) {
+        setSnackbarHttpError(e, { "Ocoreu um erro": e.response.data.message });
         console.log(`error during fetch sendCoins api ${e}`);
       }
     } else {
-      console.log(body);
+      setSnackBarHttpWarning("Preencha todos os campos");
     }
   };
 
@@ -130,14 +142,11 @@ const UserDonate = () => {
         rowsMax={5}
         label="Justificativa"
       />
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        onClick={handleSubmit}
-      >
-        Enviar
-      </Button>
+      <div className={classes.rootIcon}>
+        <IconButton color="primary" aria-label="add to shopping cart">
+          <SendOutlinedIcon size="large" onClick={handleSubmit} />
+        </IconButton>
+      </div>
     </form>
   );
 };

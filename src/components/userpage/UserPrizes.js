@@ -9,7 +9,6 @@ import prizeCardCover from "../../static/images/prize-card-cover.svg";
 import { getPrizeById } from "../../services/prizes";
 import { AuthContext } from "../auth/Auth";
 
-import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import FaceIcon from "@material-ui/icons/Face";
 
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserPrizes = () => {
   const classes = useStyles();
-  const { userData } = useContext(AuthContext);
+  const { userData, loading, setIsLoading } = useContext(AuthContext);
   const [prizes, setPrizes] = useState([]);
 
   const fetchUserPrizes = async () => {

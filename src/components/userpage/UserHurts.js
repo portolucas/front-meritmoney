@@ -95,7 +95,9 @@ const UserHurts = () => {
                 return (
                   <div className={classes.rootAvatar}>
                     <Chip
-                      avatar={<Avatar>{hurts.nome_remetente.slice(0, 1)}</Avatar>}
+                      avatar={
+                        <Avatar>{hurts.nome_remetente.slice(0, 1)}</Avatar>
+                      }
                       label={`$mc$${hurts.valor} recebido de ${hurts.nome_remetente}`}
                       //onClick={handleClick}
                       //onDelete={handleDelete}

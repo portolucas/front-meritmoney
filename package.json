@@ -5,8 +5,10 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.10.0",
     "axios": "^0.21.0",
+    "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

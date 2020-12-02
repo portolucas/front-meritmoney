@@ -23,11 +23,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: 20,
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "left",
-    color: theme.palette.text.secondary,
-  },
+
   cardRoot: {
     minWidth: 275,
     padding: 20,
@@ -69,7 +65,7 @@ const UserWelcome = () => {
   return (
     <>
       <div className={classes.root}>
-        <Grid container spacing={10}>
+        <Grid container spacing={5}>
           <Grid item xs={12} sm={6}>
             <SimpleAccordion title={"Resgatar"}>
               <UserRescue />
