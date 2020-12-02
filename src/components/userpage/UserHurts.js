@@ -11,12 +11,23 @@ import Typography from "@material-ui/core/Typography";
 import { listHurtsByColaborator } from "../../services/hurts";
 import { AuthContext } from "../auth/Auth";
 
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
+
 import hurtsCardCover from "../../static/images/hurts-card-cover.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     maxWidth: "100%",
+  },
+  rootAvatar: {
+    display: "flex",
+    justifyContent: "left",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(0.5),
+    },
   },
   details: {
     display: "flex",
@@ -65,38 +76,32 @@ const UserHurts = () => {
             {realizedHurts &&
               realizedHurts.map((hurts) => {
                 return (
-                  <div className={classes.pos}>
-                    <Typography color="textSecondary">
-                      mc$ {hurts.valor} enviada para
-                      <Typography color="textSecondary">
-                        {hurts.nome_destinatario}
-                      </Typography>
-                    </Typography>
-                    <Typography variant="body1">
-                      dia{" "}
-                      {moment(hurts.data_transacao)
-                        .local()
-                        .format("DD/MM/YYYY")}
-                    </Typography>
+                  <div className={classes.rootAvatar}>
+                    <Chip
+                      avatar={
+                        <Avatar>{hurts.nome_destinatario.slice(0, 1)}</Avatar>
+                      }
+                      label={`$mc$${hurts.valor} enviada para ${hurts.nome_destinatario}`}
+                      //onClick={handleClick}
+                      //onDelete={handleDelete}
+                      variant="outlined"
+                      color="primary"
+                    />
                   </div>
                 );
               })}
             {rogerHurts &&
               rogerHurts.map((hurts) => {
                 return (
-                  <div className={classes.pos}>
-                    <Typography color="textSecondary">
-                      mc$ {hurts.valor} recebida de
-                    </Typography>
-                    <Typography color="textSecondary">
-                      {hurts.nome_remetente}
-                    </Typography>
-                    <Typography variant="body1">
-                      dia{" "}
-                      {moment(hurts.data_transacao)
-                        .local()
-                        .format("DD/MM/YYYY")}
-                    </Typography>
+                  <div className={classes.rootAvatar}>
+                    <Chip
+                      avatar={<Avatar>{hurts.nome_remetente.slice(0, 1)}</Avatar>}
+                      label={`$mc$${hurts.valor} recebido de ${hurts.nome_remetente}`}
+                      //onClick={handleClick}
+                      //onDelete={handleDelete}
+                      variant="outlined"
+                      color="primary"
+                    />
                   </div>
                 );
               })}

@@ -9,17 +9,29 @@ import prizeCardCover from "../../static/images/prize-card-cover.svg";
 import { getPrizeById } from "../../services/prizes";
 import { AuthContext } from "../auth/Auth";
 
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
+import FaceIcon from "@material-ui/icons/Face";
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    maxWidth: '100%'
+    display: "flex",
+    maxWidth: "100%",
+  },
+  rootAvatar: {
+    display: "flex",
+    justifyContent: "left",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(0.5),
+    },
   },
   details: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
   },
   content: {
-    flex: '1 0 auto',
+    flex: "1 0 auto",
   },
   pos: {
     marginBottom: 12,
@@ -77,14 +89,16 @@ const UserPrizes = () => {
             {prizes &&
               prizes.map((prize) => {
                 return (
-                  <>
-                    <Typography variant="body1" component="h2">
-                      {prize.descricao}
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                      por mc$ {prize.valor}
-                    </Typography>
-                  </>
+                  <div className={classes.rootAvatar}>
+                    <Chip
+                      icon={<FaceIcon />}
+                      label={`${prize.descricao} por mc$${prize.valor}`}
+                      //onClick={handleClick}
+                      //onDelete={handleDelete}
+                      variant="outlined"
+                      color="primary"
+                    />
+                  </div>
                 );
               })}
           </CardContent>

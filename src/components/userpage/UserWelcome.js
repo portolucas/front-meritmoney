@@ -4,14 +4,16 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
-import { getPrizeById } from "../../services/prizes";
-import { listHurtsByColaborator } from "../../services/hurts";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import Link from "@material-ui/core/Link";
 
 import SimpleAccordion from "../common/Accordion";
 
 import UserPrizes from "./UserPrizes";
 import UserHurts from "./UserHurts";
 import UserRescue from "./UserRescue";
+import StickyFooter from "../common/Footer";
 
 import { AuthContext } from "../auth/Auth";
 import UserDonate from "./UserDonate";
@@ -51,39 +53,43 @@ const UserWelcome = () => {
   const classes = useStyles();
   const { userData } = useContext(AuthContext);
 
+  function Copyright() {
+    return (
+      <Typography variant="body2" color="textSecondary">
+        {"Copyright © "}
+        <Link color="inherit" href="https://material-ui.com/">
+          Your Website
+        </Link>{" "}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
+    );
+  }
+
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Typography variant={"h1"}>Bem-vindo, {userData.nome}</Typography>{" "}
-            <Typography variant={"subtitle1"}>
-              O seu saldo para resgatar prêmios é mc${userData.saldo_recebido}
-            </Typography>
-            <Typography variant={"subtitle1"}>
-              O seu saldo para presentear os seus amigos é mc$
-              {userData.saldo_acumulado}{" "}
-            </Typography>
-          </Paper>
+    <>
+      <div className={classes.root}>
+        <Grid container spacing={10}>
+          <Grid item xs={12} sm={6}>
+            <SimpleAccordion title={"Resgatar"}>
+              <UserRescue />
+            </SimpleAccordion>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <SimpleAccordion title={"Doar"}>
+              <UserDonate />
+            </SimpleAccordion>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <UserPrizes />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <UserHurts />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <UserPrizes />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <UserHurts />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <SimpleAccordion title={"Doar"}>
-            <UserDonate />
-          </SimpleAccordion>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <SimpleAccordion title={"Resgatar"}>
-            <UserRescue />
-          </SimpleAccordion>
-        </Grid>
-      </Grid>
-    </div>
+      </div>
+      <StickyFooter />
+    </>
   );
 };
 
