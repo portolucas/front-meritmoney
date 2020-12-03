@@ -42,8 +42,6 @@ const UserDonate = () => {
     justificativa: null,
   });
 
-  console.log(donate);
-
   const handleChange = (event) => {
     event.persist();
     setDonate((oldValues) => ({
@@ -98,13 +96,6 @@ const UserDonate = () => {
       try {
         let { status } = await sendCoins(body);
         if (status === 200) {
-          setDonate((oldValues) => ({
-            ...oldValues,
-            id_remetente: null,
-            id_destinatario: null,
-            valor: null,
-            justificativa: null,
-          }));
           setSnackBarHttpSuccess("Enviado com sucesso!");
         }
       } catch (e) {
@@ -143,8 +134,12 @@ const UserDonate = () => {
         label="Justificativa"
       />
       <div className={classes.rootIcon}>
-        <IconButton color="primary" aria-label="add to shopping cart">
-          <SendOutlinedIcon size="large" onClick={handleSubmit} />
+        <IconButton
+          onClick={handleSubmit}
+          color="primary"
+          aria-label="add to shopping cart"
+        >
+          <SendOutlinedIcon size="large" />
         </IconButton>
       </div>
     </form>

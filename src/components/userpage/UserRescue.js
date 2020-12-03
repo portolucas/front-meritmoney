@@ -70,20 +70,16 @@ const UserRescue = () => {
   const handleSubmit = async () => {
     let body = { ...rescue };
     body.id_colaborador = userData.id;
+    console.log(body);
     if (body.id_colaborador && body.id_premio) {
       try {
         let { status } = await rescuePrize(body);
-        if (status === 204) {
-          setRescue((oldValues) => ({
-            ...oldValues,
-            id_colaborador: null,
-            id_premio: null,
-          }));
+        if (status === 200) {
           setSnackBarHttpSuccess("Resgatado com sucesso!");
         }
       } catch (e) {
-        setSnackbarHttpError(e, { "Ocoreu um erro": e.response.data.message });
-        console.log(`error during fetch rescue prize api ${e}`);
+        if (e.response && e.response.data && e.response.data.error)
+          setSnackbarHttpError(e, [e.response.data.error]);
       }
     } else {
       setSnackBarHttpWarning("Preencha todos os campos");
@@ -101,8 +97,12 @@ const UserRescue = () => {
         onChange={handleChange}
       />
       <div className={classes.rootIcon}>
-        <IconButton color="primary" aria-label="add to shopping cart">
-          <GetAppOutlinedIcon size="large" onClick={handleSubmit} />
+        <IconButton
+          onClick={handleSubmit}
+          color="primary"
+          aria-label="add to shopping cart"
+        >
+          <GetAppOutlinedIcon size="large" />
         </IconButton>
       </div>
     </form>

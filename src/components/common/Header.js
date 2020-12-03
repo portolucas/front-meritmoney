@@ -99,10 +99,10 @@ const Header = () => {
                 }}
               >
                 <Typography className={classes.typography}>
-                  mc${userData.saldo_acumulado} para resgatar
+                  mc${userData.saldo_recebido} para resgatar
                 </Typography>
                 <Typography className={classes.typography}>
-                  mc${userData.saldo_recebido} para doar
+                  mc${userData.saldo_acumulado} para doar
                 </Typography>
               </Popover>
             </div>
