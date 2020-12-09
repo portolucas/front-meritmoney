@@ -13,6 +13,6 @@ export function getAllTransactions() {
 
 export function getTransactionWithParams(date, idRemetent, idDestination) {
   return http.get(
-    `/webapi/transacoes?data=${date}&?remetente=${idRemetent}&?destinatario=${idDestination}/`
+    `/webapi/transacoes?data=${date}?remetente=${idRemetent}?destinatario=${idDestination}/`
   );
 }

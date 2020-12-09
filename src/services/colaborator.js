@@ -4,6 +4,10 @@ export function getAllColaborators() {
   return http.get(`/webapi/colaboradores/`);
 }
 
+export function getColaboratorById(id) {
+  return http.get(`/webapi/colaboradores/${id}`);
+}
+
 /**
  * 
  * @param {object} body 

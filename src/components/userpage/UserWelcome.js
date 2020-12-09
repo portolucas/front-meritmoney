@@ -84,7 +84,6 @@ const UserWelcome = () => {
           </Grid>
         </Grid>
       </div>
-      <StickyFooter />
     </>
   );
 };

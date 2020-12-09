@@ -3,6 +3,7 @@ import Auth from "./components/auth/Auth";
 import Header from "./components/common/Header";
 import Nav from "./components/common/Nav";
 import SnackBar from "./components/common/Snackbar";
+import StickyFooter from "./components/common/Footer";
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <Header />
         <Nav />
       </SnackBar>
+      <StickyFooter />
     </Auth>
   );
 };

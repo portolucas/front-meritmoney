@@ -14,7 +14,7 @@ import { AuthContext } from "../auth/Auth";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    overflowX: 'none'
+    overflowX: "none",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -67,6 +67,11 @@ const Header = () => {
               Merit Money
             </Link>
           </Typography>
+          <Button color="inherit">
+            <Link className={classes.link} to="dashboard">
+              DASHBOARD
+            </Link>
+          </Button>
           {logged && (
             <Button
               color="inherit"

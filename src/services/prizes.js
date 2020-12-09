@@ -27,7 +27,7 @@ export function getPrizesTransactionsWithParams(
   idColaborator
 ) {
   return http.get(
-    `/webapi/transacao-premios?start-date=${startDate}&?end-date=${endDate}&?premio-resgatado=${idPrize}&?colaborador=${idColaborator}/`
+    `/webapi/transacao-premios?start-date=${startDate}?end-date=${endDate}?premio-resgatado=${idPrize}?colaborador=${idColaborator}/`
   );
 }
 
