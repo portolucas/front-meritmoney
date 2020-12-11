@@ -63,7 +63,7 @@ const Header = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <Link className={classes.link} to="/">
+            <Link className={classes.link} to="/home">
               Merit Money
             </Link>
           </Typography>

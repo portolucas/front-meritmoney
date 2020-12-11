@@ -50,7 +50,7 @@ const UserDonate = () => {
     }));
   };
 
-  async function fetchColaborators() {
+  const fetchColaborators = async () => {
     let colaborators = [];
     try {
       const { data } = await getAllColaborators();
@@ -61,7 +61,7 @@ const UserDonate = () => {
       console.log(`error during fetch colaborators ${e}`);
     }
     setColaboratorOptions(colaborators);
-  }
+  };
 
   useEffect(() => {
     fetchColaborators();
