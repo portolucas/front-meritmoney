@@ -105,7 +105,7 @@ const Dashboard = () => {
 
   function buildRows() {
     let rows = [];
-    if (transactions.length > 1) {
+    if (transactions.length >= 1) {
       transactions.forEach((item) => {
         rows.push({
           nome_remetente: item.id_remetente,
@@ -133,7 +133,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (objectSize(params) >= 1) fetchTransactionsWithParams(params);
+    if (objectSize(params)) fetchTransactionsWithParams(params);
   }, [params]);
 
   useEffect(() => {

@@ -56,7 +56,6 @@ const Header = () => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   return (
     <div className={classes.root}>
@@ -87,7 +86,7 @@ const Header = () => {
             <div className={classes.rootAvatar}>
               <Button>
                 <Avatar onClick={handleClick} className={classes.orange}>
-                  {username.slice(0, 1)}
+                  {username && username.slice(0, 1)}
                 </Avatar>
               </Button>
               <Popover
