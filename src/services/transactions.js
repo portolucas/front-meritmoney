@@ -1,4 +1,5 @@
 import http from "./httpService";
+import moment from "moment";
 
 export function getAllTransactions() {
   return http.get(`/webapi/transacoes/`);
@@ -6,13 +7,14 @@ export function getAllTransactions() {
 
 /**
  *
- * @param {string} date '2020/10/30'
+ * @param {string} date '2020-10/-30'
  * @param {int} idRemetent
  * @param {int} idDestination
  */
 
 export function getTransactionWithParams(body) {
-  let date = body.date;
+  let date;
+  if (body.date) date = moment(body.date).format("YYYY-MM-DD");
   let idRemetent = body.remetente;
   let idDestination = body.destinatario;
 
@@ -29,14 +31,14 @@ export function getTransactionWithParams(body) {
   }
   if (date && idRemetent && idDestination) {
     return http.get(
-      `/webapi/transacoes?data=${date}&remetente=${idRemetent}?destinatario=${idDestination}`
+      `/webapi/transacoes?data=${date}&remetente=${idRemetent}&destinatario=${idDestination}`
     );
   }
   if (idRemetent && !idDestination && !date) {
     return http.get(`/webapi/transacoes?remetente=${idRemetent}`);
   }
   if (idRemetent && idDestination && !date) {
-    console.log('aqio')
+    console.log("aqio");
     return http.get(
       `/webapi/transacoes?remetente=${idRemetent}&destinatario=${idDestination}`
     );

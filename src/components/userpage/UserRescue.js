@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import GetAppOutlinedIcon from "@material-ui/icons/GetAppOutlined";
-import { SelectInput, InputCurrency, InputMultiline } from "../common/Inputs";
+import { SelectInput } from "../common/Inputs";
 import { getAllPrizes } from "../../services/prizes";
 import { rescuePrize } from "../../services/prizes";
 

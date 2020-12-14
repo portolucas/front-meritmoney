@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -6,6 +6,13 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import "date-fns";
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 export function SelectInput({
   value,
@@ -74,9 +81,34 @@ export function InputMultiline({ value, onChange, rowsMax, label, ...rest }) {
       rowsMax={rowsMax}
       value={value}
       onChange={onChange}
-      {...rest}
       variant="outlined"
       {...rest}
     />
+  );
+}
+
+export function MaterialUIPickers({ selectedDate, handleDateChange }) {
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Grid>
+        <KeyboardDatePicker
+          disableToolbar={true}
+          label="Data"
+          name="date"
+          format="dd/MM/yyyy"
+          value={selectedDate || null}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            "aria-label": "Mudar a data",
+          }}
+          d
+          inputVariant="outlined"
+          cancelLabel="Cancelar"
+          clearLabel="Limpar"
+          todayLabel="Hoje"
+          okLabel="Confirmar"
+        />
+      </Grid>
+    </MuiPickersUtilsProvider>
   );
 }

@@ -66,21 +66,24 @@ const Header = () => {
               Merit Money
             </Link>
           </Typography>
-          <Button color="inherit">
-            <Link className={classes.link} to="dashboard">
-              DASHBOARD
-            </Link>
-          </Button>
+
           {logged && (
-            <Button
-              color="inherit"
-              className={classes.link}
-              onClick={handle_logout}
-            >
-              <Link className={classes.link} to="/">
-                Logout
-              </Link>
-            </Button>
+            <>
+              <Button color="inherit">
+                <Link className={classes.link} to="dashboard">
+                  DASHBOARD
+                </Link>
+              </Button>
+              <Button
+                color="inherit"
+                className={classes.link}
+                onClick={handle_logout}
+              >
+                <Link className={classes.link} to="/">
+                  Sair
+                </Link>
+              </Button>
+            </>
           )}
           {logged ? (
             <div className={classes.rootAvatar}>
@@ -113,14 +116,14 @@ const Header = () => {
           ) : (
             <Button>
               <Link className={classes.link} to="/login">
-                Login
+                Entrar
               </Link>
             </Button>
           )}
           {!logged && (
             <Button color="inherit">
               <Link className={classes.link} to="/signup">
-                Signup
+                Cadastrar
               </Link>
             </Button>
           )}

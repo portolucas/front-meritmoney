@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -12,37 +12,55 @@ import { AuthContext } from "../auth/Auth";
 import Chip from "@material-ui/core/Chip";
 import FaceIcon from "@material-ui/icons/Face";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    maxWidth: "100%",
-  },
-  rootAvatar: {
-    display: "flex",
-    justifyContent: "left",
-    flexWrap: "wrap",
-    "& > *": {
-      margin: theme.spacing(0.5),
-    },
-  },
-  details: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  content: {
-    flex: "1 0 auto",
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
-
 const UserPrizes = () => {
-  const classes = useStyles();
-  const { userData, loading, setIsLoading } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
   const [prizes, setPrizes] = useState([]);
 
-  const fetchUserPrizes = async () => {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      maxWidth: "100%",
+      maxHeight: "500px",
+    },
+    rootAvatar: {
+      display: "flex",
+      justifyContent: "left",
+      flexWrap: "wrap",
+      "& > *": {
+        margin: theme.spacing(0.5),
+      },
+    },
+    details: {
+      display: "flex",
+      flexDirection: "column",
+    },
+    content: {
+      flex: prizes.length > 10 ? "auto" : "1 0 auto",
+      overflowX: prizes.length > 10 ? "auto" : "hidden",
+    },
+    pos: {
+      marginBottom: 12,
+    },
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "3px",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(124,185,199,0.7)",
+        borderRadius: "2px",
+      },
+      "*:hover": {
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(124,185,199,0.5)",
+          transitionDuration: "1s",
+        },
+      },
+    },
+  }));
+
+  const classes = useStyles();
+
+  const fetchUserPrizes = useCallback(async () => {
     let prizes = [];
 
     if (
@@ -71,20 +89,20 @@ const UserPrizes = () => {
       }
       setPrizes(prizes);
     }
-  };
+  }, [userData]);
 
   useEffect(() => {
     fetchUserPrizes();
-  }, [userData]);
+  }, [userData, fetchUserPrizes]);
 
   return (
     <>
       <Card className={classes.root}>
         <div className={classes.details}>
+          <Typography className={classes.pos} variant={"h3"}>
+            Prêmios resgatados
+          </Typography>
           <CardContent className={classes.content}>
-            <Typography className={classes.pos} variant={"h3"}>
-              Prêmios resgatados
-            </Typography>
             {prizes &&
               prizes.map((prize) => {
                 return (
@@ -105,7 +123,6 @@ const UserPrizes = () => {
         <CardMedia
           component="img"
           alt="Prêmios resgatados"
-          className={classes.cover}
           image={prizeCardCover}
         />
       </Card>

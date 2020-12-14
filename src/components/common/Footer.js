@@ -1,5 +1,4 @@
 import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -41,9 +40,6 @@ const StickyFooter = () => {
     <div className={classes.root}>
       <footer className={classes.footer}>
         <Container maxWidth="sm">
-          <Typography variant="body1">
-            Caso você se perca, o endereço está aqui em baixo.
-          </Typography>
           <Copyright />
         </Container>
       </footer>

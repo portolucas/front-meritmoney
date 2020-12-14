@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext, useCallback } from "react";
 import "../../App.css";
 
 import { getCurrentUser } from "../../services/auth/currentUser";
@@ -13,7 +13,7 @@ const Auth = ({ children }) => {
   const [username, setUsername] = useState("");
   const [userData, setUserdata] = useState("");
 
-  async function fetchCurrentUser() {
+  const fetchCurrentUser = useCallback(async () => {
     try {
       if (logged) {
         const { data } = await getCurrentUser();
@@ -25,7 +25,7 @@ const Auth = ({ children }) => {
     } catch (e) {
       console.log("error during fetch current user", e);
     }
-  }
+  }, [logged]);
 
   useEffect(() => {
     if (logged) {
@@ -35,7 +35,7 @@ const Auth = ({ children }) => {
         console.log(`error in current user`, e);
       }
     }
-  }, [logged]);
+  }, [logged, fetchCurrentUser]);
 
   async function fetchToken(e, body) {
     e.preventDefault();

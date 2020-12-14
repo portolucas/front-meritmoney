@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
@@ -67,7 +67,7 @@ const UserDonate = () => {
     fetchColaborators();
   }, [userData]);
 
-  const validateCurrency = async () => {
+  const validateCurrency = useCallback(async () => {
     if (donate.valor > userData.saldo_acumulado) {
       setError(true);
       setHelperText("Saldo insuficiente");
@@ -75,11 +75,11 @@ const UserDonate = () => {
       setError(false);
       setHelperText("Digite um valor inteiro");
     }
-  };
+  }, [donate.valor, userData.saldo_acumulado]);
 
   useEffect(() => {
     validateCurrency();
-  }, [donate.valor]);
+  }, [donate.valor, validateCurrency]);
 
   const handleSubmit = async () => {
     let body = { ...donate };

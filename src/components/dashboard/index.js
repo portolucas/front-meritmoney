@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
+import Typography from "@material-ui/core/Typography";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -8,9 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
-import { objectSize } from "../utils/object";
-
-import { SelectInput } from "../common/Inputs";
+import { objectSize, objectHasValue, cleanObject } from "../utils/object";
 
 import {
   getAllTransactions,
@@ -18,6 +17,7 @@ import {
 } from "../../services/transactions";
 import { getAllColaborators } from "../../services/colaborator";
 import { getColaboratorById } from "../../services/colaborator";
+import DashboardFilterToolbar from "./DashboardFilterToolbar";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -37,18 +37,17 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 700,
   },
   root: {
     padding: 50,
   },
-  filterBar: {
-    paddingBottom: 10,
-    paddingTop: 10,
+  title: {
+    paddingBottom: 25,
   },
-});
+}));
 
 const Dashboard = () => {
   const classes = useStyles();
@@ -81,18 +80,23 @@ const Dashboard = () => {
     setTransactions(transactions);
   };
 
-  const fetchTransactionsWithParams = async (params) => {
+  const fetchTransactionsWithParams = useCallback(async (params) => {
     let transactions = [];
-    try {
-      let { data } = await getTransactionWithParams(params);
-      transactions = data;
-    } catch (e) {
-      console.log(`error during fetch transactions with params api ${e}`);
+    if (objectHasValue(params, null)) {
+      cleanObject(params);
     }
-    buildTable(transactions);
-  };
+    if (objectSize(params) >= 1) {
+      try {
+        let { data } = await getTransactionWithParams(params);
+        transactions = data;
+      } catch (e) {
+        console.log(`error during fetch transactions with params api ${e}`);
+      }
+      buildTable(transactions);
+    }
+  }, []);
 
-  const fetchAllTransactions = async () => {
+  const fetchAllTransactions = useCallback(async () => {
     let transactions = [];
     try {
       let { data } = await getAllTransactions();
@@ -101,7 +105,7 @@ const Dashboard = () => {
       console.log(`error during fetch transactions api ${e}`);
     }
     buildTable(transactions);
-  };
+  }, []);
 
   function buildRows() {
     let rows = [];
@@ -134,48 +138,24 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (objectSize(params)) fetchTransactionsWithParams(params);
-  }, [params]);
+  }, [params, fetchTransactionsWithParams]);
 
   useEffect(() => {
     fetchAllTransactions();
     fetchColaborators();
-  }, []);
+  }, [fetchAllTransactions]);
 
   return (
     <div className={classes.root}>
-      <div className={classes.filterBar}>
-        <SelectInput
-          label={"Destinatário"}
-          name={"destinatario"}
-          required={false}
-          onChange={(event) => {
-            setParams((oldValues) => ({
-              ...oldValues,
-              [event.target.name]: event.target.value,
-            }));
-          }}
-          options={colaboratorsOptions}
-        />
-        <SelectInput
-          label={"Remetente"}
-          name={"remetente"}
-          required={false}
-          onChange={(event) => {
-            setParams((oldValues) => ({
-              ...oldValues,
-              [event.target.name]: event.target.value,
-            }));
-          }}
-          options={colaboratorsOptions}
-        />
-        <SelectInput
-          label={"Date"}
-          name={"date"}
-          required={false}
-          //onChange={handleFilter}
-          options={[{ text: "fakeDate", value: null }]}
-        />
-      </div>
+      <Typography className={classes.title} variant={"h3"}>
+        Dashboard
+      </Typography>
+      <DashboardFilterToolbar
+        colaboratorsOptions={colaboratorsOptions}
+        params={params}
+        setParams={setParams}
+        fetchAllTransactions={fetchAllTransactions}
+      />
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
