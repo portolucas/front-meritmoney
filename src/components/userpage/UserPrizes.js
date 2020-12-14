@@ -40,6 +40,7 @@ const UserPrizes = () => {
     },
     pos: {
       marginBottom: 12,
+      padding: 15
     },
     "@global": {
       "*::-webkit-scrollbar": {
