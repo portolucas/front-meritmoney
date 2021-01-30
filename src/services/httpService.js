@@ -1,7 +1,6 @@
 import axios from "axios";
 
 function apiUrl() {
-  console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === "development") {
     return "http://localhost:8000";
   } else {
