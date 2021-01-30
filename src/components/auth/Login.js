@@ -55,7 +55,7 @@ const Login = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Entrar {process.env.NODE_ENV}
+          Entrar
         </Typography>
         <form
           className={classes.form}
