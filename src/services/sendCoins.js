@@ -13,5 +13,5 @@ import http from "./httpService";
  */
 
 export function sendCoins(body) {
-  return http.post(`/webapi/enviar-moedas/`, body);
+  return http.post(`/merit_money/enviar_moedas/`, body);
 }

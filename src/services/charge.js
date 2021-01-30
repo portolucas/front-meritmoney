@@ -1,7 +1,7 @@
 import http from "./httpService";
 
 export function getAllCharges() {
-  return http.get(`/webapi/cargos/`);
+  return http.get(`/cargos/`);
 }
 
 /**
@@ -14,5 +14,5 @@ export function getAllCharges() {
  */
 
 export function createCharge(body) {
-  return http.post(`/webapi/cargos/`, body);
+  return http.post(`/merit_money/cargos/`, body);
 }

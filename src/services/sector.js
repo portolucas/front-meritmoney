@@ -1,7 +1,7 @@
 import http from "./httpService";
 
 export function getAllSectors() {
-    return http.get(`/webapi/setores/`)
+    return http.get(`/merit_money/setores/`)
 }
 
 /**
@@ -14,5 +14,5 @@ export function getAllSectors() {
  */
 
 export function createSector(body) {
-    return http.post(`/webapi/setores/`, body)
+    return http.post(`/merit_money/setores/`, body)
 }

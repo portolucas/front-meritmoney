@@ -4,13 +4,10 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-
 import { listHurtsByColaborator } from "../../services/hurts";
 import { AuthContext } from "../auth/Auth";
-
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
-
 import hurtsCardCover from "../../static/images/hurts-card-cover.svg";
 
 const UserHurts = () => {
@@ -42,7 +39,7 @@ const UserHurts = () => {
     },
     pos: {
       marginBottom: 12,
-      padding: 15
+      padding: 15,
     },
     "@global": {
       "*::-webkit-scrollbar": {
@@ -72,8 +69,8 @@ const UserHurts = () => {
       } catch (e) {
         console.log(`error during fetch hurts api ${e}`);
       }
-      setRealizedHurts(hurts.realizadas);
-      setRogerHurts(hurts.recebidas);
+      if (hurts && hurts.realizadas) setRealizedHurts(hurts.realizadas);
+      if (hurts && hurts.recebidas) setRogerHurts(hurts.recebidas);
     }
   }, [logged, userData]);
 

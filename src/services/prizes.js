@@ -1,15 +1,15 @@
 import http from "./httpService";
 
 export function getAllPrizes() {
-  return http.get(`/webapi/premios/`);
+  return http.get(`/merit_money/premios/`);
 }
 
 export function getPrizeById(id) {
-  return http.get(`/webapi/premios/${id}`);
+  return http.get(`/merit_money/premios/${id}`);
 }
 
 export function getAllPrizesTransactions() {
-  return http.get(`/webapi/transacao-premios/`);
+  return http.get(`/merit_money/transacao-premios/`);
 }
 
 /**
@@ -27,7 +27,7 @@ export function getPrizesTransactionsWithParams(
   idColaborator
 ) {
   return http.get(
-    `/webapi/transacao-premios?start-date=${startDate}?end-date=${endDate}?premio-resgatado=${idPrize}?colaborador=${idColaborator}/`
+    `/merit_money/transacao_premios?start-date=${startDate}?end-date=${endDate}?premio-resgatado=${idPrize}?colaborador=${idColaborator}/`
   );
 }
 
@@ -42,7 +42,7 @@ export function getPrizesTransactionsWithParams(
  */
 
 export function createPrize(body) {
-  return http.post(`/webapi/premios/`, body);
+  return http.post(`/merit_money/premios/`, body);
 }
 
 /**
@@ -56,5 +56,5 @@ export function createPrize(body) {
  */
 
 export function rescuePrize(body) {
-  return http.post(`/webapi/resgatar-premio/`, body);
+  return http.post(`/merit_money/resgatar_premio/`, body);
 }
