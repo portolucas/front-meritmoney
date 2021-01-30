@@ -1,7 +1,7 @@
 import http from "./httpService";
 
 export function getAllCharges() {
-  return http.get(`/cargos/`);
+  return http.get(`/merit_money/cargos/`);
 }
 
 /**
