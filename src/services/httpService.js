@@ -1,9 +1,15 @@
 import axios from "axios";
 
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8000"
-    : "https://mm-puc.herokuapp.com";
+function apiUrl() {
+  alert(process.env.NODE_ENV)
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:8000";
+  } else {
+    return "https://mm-puc.herokuapp.com";
+  }
+}
+
+axios.defaults.baseURL = apiUrl();
 axios.defaults.headers = {
   Authorization: `JWT ${localStorage.getItem("token")}`,
 };
