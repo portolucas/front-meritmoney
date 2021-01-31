@@ -14,15 +14,32 @@ export function getAllTransactions() {
 
 export function getTransactionWithParams(body) {
   let date;
-  if (body.date) date = moment(body.date).format("YYYY-MM-DD");
-  let idRemetent = body.remetente;
-  let idDestination = body.destinatario;
+  let idRemetent;
+  let idDestination;
+
+  if (body.date) {
+    date = moment(body.date).format("YYYY-MM-DD");
+  } else {
+    date = false;
+  }
+  if (body.remetente) {
+    idRemetent = body.remetente;
+  } else {
+    idRemetent = false;
+  }
+  if (body.destinatario) {
+    idDestination = body.destinatario;
+  } else {
+    idDestination = false;
+  }
 
   if (date && !idRemetent && !idDestination) {
     return http.get(`/merit_money/transacoes?data=${date}`);
   }
   if (date && idRemetent && !idDestination) {
-    return http.get(`/merit_money/transacoes?data=${date}&remetente=${idRemetent}`);
+    return http.get(
+      `/merit_money/transacoes?data=${date}&remetente=${idRemetent}`
+    );
   }
   if (date && idDestination && !idRemetent) {
     return http.get(
